@@ -1,0 +1,86 @@
+﻿@using WebPortfolioMVC.Models;
+@model List<PrePostDto>
+
+@{
+    Layout = null;
+}
+
+<head>
+    <title>Blog</title>
+    <!-- Meta -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- FontAwesome JS-->
+    <script defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
+    <!-- Theme CSS -->
+    <link id="theme-style" rel="stylesheet" href="css/theme-1.css">
+
+</head>
+<body>
+
+    <header class="header text-center">
+        <h1 class="blog-name pt-lg-4 mb-0"><a href="index.html">ИМЯ ПОЛЬЗОВАТЕЛЯ</a></h1>
+
+        <nav class="navbar navbar-expand-lg navbar-dark">
+
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div id="navigation" class="collapse navbar-collapse flex-column">
+                <div class="profile-section pt-3 pt-lg-0">
+                    <img class="profile-image mb-3 rounded-circle mx-auto" src="images/profile.png" alt="image">
+
+                    <div class="bio mb-3">КРАТКАЯ БИОГРАФИЯ</div><!--//bio-->
+                    <ul class="social-list list-inline py-3 mx-auto">
+                        <li class="list-inline-item"><a href="#"><i class="fab fa-github-alt fa-fw"></i></a></li>
+                    </ul><!--//social-list-->
+                    <hr>
+                </div><!--//profile-section-->
+
+                <ul class="navbar-nav flex-column text-left">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="index.html"><i class="fas fa-home fa-fw mr-2"></i>Blog Home <span class="sr-only">(current)</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="blog-post.html"><i class="fas fa-bookmark fa-fw mr-2"></i>Blog Post</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="about.html"><i class="fas fa-user fa-fw mr-2"></i>About Me</a>
+                    </li>
+                </ul>
+
+                <div class="my-2 my-md-3">
+                    <a class="btn btn-primary" href="https://themes.3rdwavemedia.com/" target="_blank">ВЫХОД</a>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="main-wrapper">
+        <section class="cta-section theme-bg-light py-5">
+        </section>
+        <section class="blog-list px-3 py-5 p-md-5">
+            <div class="container">
+                @foreach (var post in Model)
+                {
+                    <div class="item mb-5">
+                        <div class="media">
+                            <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="images/blog/blog-post-thumb-1.jpg" alt="image">
+                            <div class="media-body">
+                                <h3 class="title mb-1"><a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">@post.Title</a></h3>
+                                <div class="meta mb-1"><span class="comment"><a href="#">@post.AuthorName</a></span><span class="date">@post.CreatedAt</span><span class="time">Время прочтения: @post.MinutsToRead мин</span><span class="comment">Просмотров: @post.Views</span><span class="comment"><a href="#">КОЛИЧЕСТВО КОММ</a></span></div>
+                                <div class="intro">@post.Intro</div>
+                                <a class="more-link" href="blog-post.html">Читать далее &rarr;</a>
+                            </div><!--//media-body-->
+                        </div><!--//media-->
+                    </div><!--//item-->
+                }
+            </div>
+        </section>
+    </div><!--//main-wrapper-->
+    <!-- Javascript -->
+    <script src="plugins/jquery-3.3.1.min.js"></script>
+    <script src="plugins/popper.min.js"></script>
+    <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
+</body>
