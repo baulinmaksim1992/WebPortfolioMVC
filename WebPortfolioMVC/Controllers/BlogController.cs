@@ -7,16 +7,23 @@ using WebPortfolioMVC.Models;
 
 namespace Blog.Controllers
 {
-    public class PostsController : Controller
+    public class BlogController : Controller
     {
         private readonly BlogContext _context;
 
-        public PostsController(BlogContext context)
+        public BlogController(BlogContext context)
         {
             _context = context;
         }
 
-        // GET: Posts
+        // GET: Create User register page
+
+        public async Task<IActionResult> CreateUser()
+        {
+            return View();
+        }
+
+        // GET: Blog
         public async Task<IActionResult> Index()
         {
             var posts = await _context.Posts.ToListAsync();
@@ -30,7 +37,7 @@ namespace Blog.Controllers
             return View(postsDto);
         }
 
-        // GET: Posts/Details/5
+        // GET: Blog/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -48,27 +55,31 @@ namespace Blog.Controllers
             return View(new PrePostDto().Init(post, _context));
         }
 
-        // GET: Posts/Create
-        public IActionResult Create()
+        // GET: Blog/Create
+        //[ValidateAntiForgeryToken]
+        public IActionResult CreatePost()
         {
             return View();
         }
 
-        // POST: Posts/Create
+        // POST: Blog/Create
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Title,Content,AuthorId")] Post post)
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreatePost([Bind("Title,Content,AuthorId")] Post post)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(post);
+                var postForCreating = new Post { Title = post.Title, Content = post.Content, UserId = 1, CreatedAt = DateTime.Now, Views = 0, PostTags = new List<PostTag> { new PostTag { TagId = _context.Tags.First(t => t.Id == 1).Id } } };
+                _context.Add(postForCreating);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(post);
+
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: Posts/Edit/5
+        // GET: Blog/Edit/5
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -84,9 +95,9 @@ namespace Blog.Controllers
             return View(post);
         }
 
-        // POST: Posts/Edit/5
+        // POST: Blog/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Title,Content,AuthorId")] Post post)
         {
             if (id != post.Id)
@@ -117,7 +128,8 @@ namespace Blog.Controllers
             return View(post);
         }
 
-        // GET: Posts/Delete/5
+        // GET: Blog/Delete/5
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -135,9 +147,9 @@ namespace Blog.Controllers
             return View(post);
         }
 
-        // POST: Posts/Delete/5
+        // POST: Blog/Delete/5
         [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var post = await _context.Posts.FindAsync(id);

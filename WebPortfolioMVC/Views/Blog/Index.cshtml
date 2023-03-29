@@ -2,23 +2,13 @@
 @model List<PrePostDto>
 
 @{
-    Layout = null;
+    Layout = "_LayoutBlog";
 }
 
 <head>
     <title>Blog</title>
-    <!-- Meta -->
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- FontAwesome JS-->
-    <script defer src="https://use.fontawesome.com/releases/v5.7.1/js/all.js" integrity="sha384-eVEQC9zshBn0rFj4+TU78eNA19HMNigMviK/PU/FFjLXqa/GKPgX58rvt5Z8PLs7" crossorigin="anonymous"></script>
-    <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="css/theme-1.css">
-
 </head>
 <body>
-
     <header class="header text-center">
         <h1 class="blog-name pt-lg-4 mb-0"><a href="index.html">ИМЯ ПОЛЬЗОВАТЕЛЯ</a></h1>
 
@@ -50,16 +40,38 @@
                         <a class="nav-link" href="about.html"><i class="fas fa-user fa-fw mr-2"></i>About Me</a>
                     </li>
                 </ul>
+                
+                <div class="my-2 my-md-3">
+                    <a class="btn btn-primary" asp-area="" asp-controller="Blog" asp-action="CreatePost">Create post</a>
+                </div>
 
                 <div class="my-2 my-md-3">
-                    <a class="btn btn-primary" href="https://themes.3rdwavemedia.com/" target="_blank">ВЫХОД</a>
+                    <a class="btn btn-primary" href="https://themes.3rdwavemedia.com/" target="_blank">Log in</a>
+                </div>
+
+                <div class="my-2 my-md-3">
+                    <a class="btn btn-primary" asp-area="" asp-controller="Blog" asp-action="CreateUser">Sing in</a>
+                </div>
+
+                <div class="my-2 my-md-3">
+                    <a class="btn btn-primary" href="https://themes.3rdwavemedia.com/" target="_blank">Log out</a>
                 </div>
             </div>
         </nav>
     </header>
     <div class="main-wrapper">
-        <section class="cta-section theme-bg-light py-5">
-        </section>
+@*        <section class="cta-section theme-bg-light py-5">
+            <div class="container text-center">
+                <form class="signup-form form-inline justify-content-center pt-1">
+                    <div class="form-group">
+                        <label class="sr-only" for="semail">Type for searching</label>
+                        <input type="email" id="semail" name="semail1" class="form-control mr-md-1 semail" placeholder="Type for search">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Search</button>
+                </form>
+                
+            </div><!--//container-->
+        </section>*@
         <section class="blog-list px-3 py-5 p-md-5">
             <div class="container">
                 @foreach (var post in Model)
@@ -68,19 +80,19 @@
                         <div class="media">
                             <img class="mr-3 img-fluid post-thumb d-none d-md-flex" src="images/blog/blog-post-thumb-1.jpg" alt="image">
                             <div class="media-body">
-                                <h3 class="title mb-1"><a class="nav-link text-dark" asp-area="" asp-controller="Posts" asp-action="Details" asp-route-id="@post.Id">@post.Title</a></h3>
+                                <h3 class="title mb-1"><a class="nav-link text-dark" asp-area="" asp-controller="Blog" asp-action="Details" asp-route-id="@post.Id">@post.Title</a></h3>
                                 <div class="meta mb-1"><span class="comment"><a href="#">@post.AuthorName</a></span><span class="date">@post.CreatedAt</span><span class="time">Время прочтения: @post.MinutsToRead мин</span><span class="comment">Просмотров: @post.Views</span><span class="comment"><a href="#">КОЛИЧЕСТВО КОММ</a></span></div>
                                 <div class="intro">@post.Intro</div>
                                 <a class="more-link" href="blog-post.html">Читать далее &rarr;</a>
                             </div><!--//media-body-->
+                            <form action="/Blog/Delete" method="post" onsubmit="return confirm('Удалить пост?');">
+                                <input type="hidden" id="@post.Id" name="id" value="@post.Id">
+                                <button type="submit" class="btn btn-danger">Удалить</button>
+                            </form>
                         </div><!--//media-->
                     </div><!--//item-->
                 }
             </div>
         </section>
     </div><!--//main-wrapper-->
-    <!-- Javascript -->
-    <script src="plugins/jquery-3.3.1.min.js"></script>
-    <script src="plugins/popper.min.js"></script>
-    <script src="plugins/bootstrap/js/bootstrap.min.js"></script>
 </body>
