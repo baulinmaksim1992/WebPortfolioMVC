@@ -1,29 +1,30 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace WebPortfolioMVC.Models
 {
-    public class BlogContext : DbContext
+    public class BlogContext : IdentityDbContext<User>
     {
         public BlogContext(DbContextOptions<BlogContext> options)
             : base(options)
         {
-
+            Database.EnsureCreated();
         }
 
-        public DbSet<User> Users { get; set; }
-        public DbSet<Post> Posts { get; set; }
-        public DbSet<Tag> Tags { get; set; }
+        //public DbSet<Post> Posts { get; set; }
+        //public DbSet<Tag> Tags { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
 
-            modelBuilder.Entity<PostTag>()
-                .HasKey(pt => new { pt.PostId, pt.TagId });
+            //modelBuilder.Entity<PostTag>()
+            //    .HasKey(pt => new { pt.PostId, pt.TagId });
         }
     }
-    public class User
+    public class User : IdentityUser
     {
         public User()
         {
@@ -39,29 +40,30 @@ namespace WebPortfolioMVC.Models
         public ICollection<Post> Posts { get; set; }
     }
 
-    public class Tag
-    {
-        public Tag()
-        {
-            PostTags = new HashSet<PostTag>();
-        }
+    //public class Tag
+    //{
+    //    public Tag()
+    //    {
+    //        PostTags = new HashSet<PostTag>();
+    //    }
 
-        public int Id { get; set; }
-        public string Name { get; set; }
-        public ICollection<PostTag> PostTags { get; set; }
-    }
-    public class PostTag
-    {
-        public int Id { get; set; }
-        public int PostId { get; set; }
-        public int TagId { get; set; }
-    }
+    //    public int Id { get; set; }
+    //    public string Name { get; set; }
+    //    public ICollection<PostTag> PostTags { get; set; }
+    //}
+
+    //public class PostTag
+    //{
+    //    public int Id { get; set; }
+    //    public int PostId { get; set; }
+    //    public int TagId { get; set; }
+    //}
 
     public class Post
     {
         public Post()
         {
-            PostTags = new HashSet<PostTag>();
+            //PostTags = new HashSet<PostTag>();
         }
 
         public int Id { get; set; }
@@ -69,8 +71,8 @@ namespace WebPortfolioMVC.Models
         public string Content { get; set; }
         public DateTime CreatedAt { get; set; }
         public int Views { get; set; }
-        public ICollection<PostTag> PostTags { get; set; }
-        public int UserId { get; set; }
+        //public ICollection<PostTag> PostTags { get; set; }
+        public User User { get; set; }
     }
 
     public class PrePostDto
@@ -91,7 +93,7 @@ namespace WebPortfolioMVC.Models
 
         public PrePostDto Init(Post source, BlogContext context)
         {
-            var author = context.Users.Where(u => u.Id == source.UserId).FirstOrDefault();
+            var author = context.Users.Where(u => u.Id == source.User.Id).FirstOrDefault();
             Title = source.Title;
 
             Id = source.Id;
@@ -124,7 +126,7 @@ namespace WebPortfolioMVC.Models
                 MinutsToRead = Content.Length / WordsInMinute;
             }
 
-            PostTagsNames = context.Tags.Where(t => source.PostTags.Select(pt => pt.TagId).Contains(t.Id)).Select(t => t.Name).ToArray();
+            //PostTagsNames = context.Tags.Where(t => source.PostTags.Select(pt => pt.TagId).Contains(t.Id)).Select(t => t.Name).ToArray();
 
             return this;
         }
