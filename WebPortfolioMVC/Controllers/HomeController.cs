@@ -9,15 +9,5 @@ namespace WebPortfolioMVC.Controllers
         {
             return View();
         }
-
-        public IActionResult Electrician()
-        {
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
-            return View();
-        }
     }
 }
